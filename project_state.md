@@ -1,6 +1,13 @@
-# État du projet jobArt (mis à jour le 21/10/2026)
+# État du projet jobArt (mis à jour le 22/10/2026)
 
-> **Renommage du 22/10/2026** : le projet s'appelle désormais **jobArt** (ex-JobRadar). Déploiement Vercel du frontend **pas encore fait** : en attente de décisions (hébergement du backend et de la base, protection d'accès). Détail et reprise : `../05_memoire_session/2026-10-22_renommage_jobart.md`.
+> **Renommage du 22/10/2026** : le projet s'appelle désormais **jobArt** (ex-JobRadar). Détail et reprise : `../05_memoire_session/2026-10-22_renommage_jobart.md`.
+
+## Hébergement public (22/10/2026)
+- **Frontend** : projet Vercel `jobart` (équipe `exhorte's projects`, racine `frontend`, région `fra1`), déployé à chaque push sur `main` de `exhorte/jobArt`. Verrou HTTP Basic obligatoire (`frontend/proxy.ts`) : vérifié en ligne (401 sans identifiants, 200 avec).
+- **Backend** : service Render `jobart-api` (Docker, plan free, Frankfurt) + base `jobart-db` (PostgreSQL 17, plan free, **supprimée le 21/11/2026** sauf passage à un plan payant). L'API exige `API_TOKEN` (`Authorization: Bearer`, ajouté par le proxy Next via `BACKEND_API_TOKEN`).
+- **Reste à faire** : ajouter `DATABASE_URL` (URL interne de `jobart-db`) aux variables de `jobart-api` dans le tableau de bord Render ; sans elle le backend s'arrête au démarrage. Puis lancer une première collecte (la base Render part vide).
+- Le plan free de Render endort le service après inactivité : la veille automatique ne tourne pas pendant le sommeil (plan Starter nécessaire pour une veille continue).
+- Identifiants (verrou, jeton) : fichier local `.env.deploy` (non versionné) et variables des hébergeurs.
 
 ## Objectif
 Agrégateur personnel (local, mono-utilisateur) d'offres d'emploi, Sénégal d'abord : collecte réelle, normalisation, déduplication, score /100 explicable,
@@ -17,8 +24,8 @@ Détail : [docs/architecture.md](docs/architecture.md).
 - Docker : images backend/frontend construites, pile `db + backend + frontend` démarrée et saine, migrations auto, proxy OK, utilisateurs non-root ; worker optionnel testé (bail exclusif).
 
 ## Tests exécutés (21/10/2026)
-- Backend : 249 passés sur SQLite **et** sur PostgreSQL (base `jobradar_test`, nom d'avant le renommage) ; `ruff check` propre ; 10 tests `network` passés séparément.
-- Frontend : `tsc`, `eslint`, 20 tests Vitest, `next build` OK.
+- Backend : 258 passés sur SQLite (249 au 21/10 sur SQLite **et** PostgreSQL, base `jobradar_test`, nom d'avant le renommage ; +9 tests du jeton d'API le 22/10) ; `ruff check` propre ; 10 tests `network` passés séparément.
+- Frontend : `tsc`, `eslint`, 27 tests Vitest (dont 7 du verrou d'accès), `next build` OK.
 - Doc : `scripts/gen_source_feasibility.py --check` à jour.
 
 ## Problèmes connus / non vérifié
@@ -29,7 +36,7 @@ Détail : [docs/architecture.md](docs/architecture.md).
 - Emploi Dakar : CGU « usage personnel et privé » — risque à valider par l'utilisateur.
 - Dépôt GitHub public contenant des fixtures de pages tierces — décision à prendre.
 - Profils par défaut = hypothèses à valider.
-- **Git** : le dépôt est maintenant **à la racine** (`C:\Dev\jobart`, remote `exhorte/jobart`, branche `main`) ; le travail a été commité le 21/10 avec l'application à la racine. Le 22/10 l'arborescence a été remise à l'état d'origine (code dans `04_code/`) : git voit des déplacements non enregistrés. Structure du dépôt public (notes privées dans l'historique) à décider.
+- **Git** : `04_code/` est son propre dépôt (remote `exhorte/jobArt`, branche `main`) ; le dépôt de la racine `C:\Dev\jobart` (notes privées) est local, sans remote.
 - La veille peut être sautée sous charge (délai de grâce APScheduler de 1 s) : correctif prévu (backlog B12).
 
 ## Sources
@@ -38,5 +45,5 @@ Différées : SeneJobs (404), RecrutSen (SPA), Socium Job (530), TechCabal (widg
 Career List Africa, Impactpool. Détail : [docs/source-feasibility.md](docs/source-feasibility.md).
 
 ## Prochaine tâche prioritaire
-Relire et committer le travail, puis trancher les questions ouvertes (CGU Emploi Dakar, dépôt public, profils par défaut) ; ensuite laisser tourner la veille quelques jours.
+Mettre `DATABASE_URL` sur le service Render `jobart-api`, vérifier `/api/health` puis lancer une collecte depuis le site public ; trancher les questions ouvertes (plan payant Render pour la veille, CGU Emploi Dakar, fixtures de pages tierces, profils par défaut) ; ensuite laisser tourner la veille quelques jours.
 Liste complète : [docs/development-plan.md](docs/development-plan.md).
