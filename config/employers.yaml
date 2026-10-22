@@ -1,0 +1,91 @@
+# Registre des employeurs cibles (cartographie du 14/10/2026 + vérification du 21/10/2026).
+#
+# Règles : aucune URL n'est inventée. `career_url` n'est renseignée que si elle a répondu en HTTP 200 lors de la
+# vérification ; sinon `career_url: null` et la raison figure dans `verification_note`.
+# `source_key` relie l'employeur à un connecteur de config/sources.yaml (quand la page publie des offres collectables).
+# Ajouter un employeur = ajouter une entrée ; si sa page est collectable, créer un connecteur dédié.
+
+employers:
+  - key: sonatel
+    name: Sonatel
+    sector: Télécommunications
+    country: SN
+    website: https://sonatel.sn/
+    career_url: https://sonatel.sn/capital-humain/travailler-a-sonatel/
+    collection_method: none
+    source_key: null
+    status: to_verify
+    checked_on: 2026-10-21
+    verification_note: "Site officiel et page « Nous rejoindre » accessibles (HTTP 200). Aucune liste d'offres publique repérée : la page renvoie vers un formulaire de candidature spontanée/stage (https://sonatel.sn/demande-demplois-candidature-spontanee-stage/). « Mon job à Sonatel » est une rubrique de témoignages. Veille via LinkedIn / ajout manuel."
+
+  - key: free_senegal
+    name: Free Sénégal
+    sector: Télécommunications
+    country: SN
+    website: null
+    career_url: null
+    collection_method: none
+    source_key: null
+    status: inaccessible
+    checked_on: 2026-10-21
+    verification_note: "La cartographie cite carriere.free.sn : connexion expirée (ConnectTimeout) le 21/10/2026. URL non confirmée, donc non enregistrée comme officielle ; à retester."
+
+  - key: wave
+    name: Wave
+    sector: Fintech
+    country: SN
+    website: https://www.wave.com/
+    career_url: https://www.wave.com/en/careers/
+    collection_method: html_list
+    source_key: wave_careers
+    status: verified
+    checked_on: 2026-10-21
+    verification_note: "Page carrière officielle accessible (redirection depuis wave.com/en/careers), 74 offres listées avec URLs /careers/job/{id}/. Connecteur implémenté."
+
+  - key: intouch
+    name: InTouch
+    sector: Fintech / Paiement
+    country: SN
+    website: https://www.intouchgroup.net/
+    career_url: https://www.intouchgroup.net/carriere
+    collection_method: none
+    source_key: null
+    status: to_verify
+    checked_on: 2026-10-21
+    verification_note: "Pages /carriere et /offres-demplois accessibles (HTTP 200) mais la liste d'offres n'est pas dans le HTML (sélection de pays + formulaire relié à un site Odoo dont robots.txt interdit /jobs). Pas collectable de façon autorisée pour l'instant ; les stages InTouch sont relayés par ConcourSN."
+
+  - key: jappandal_techinnovation
+    name: Jàppandal Techinnovation
+    sector: Services numériques
+    country: SN
+    website: null
+    career_url: null
+    collection_method: none
+    source_key: null
+    status: unverified
+    checked_on: 2026-10-21
+    verification_note: "Aucune URL officielle citée par la cartographie. Le domaine jappandal.com répond mais présente une « plateforme e-commerce multi-boutiques » : identité non confirmée, donc non enregistrée."
+
+  - key: baamtu
+    name: Baamtu
+    sector: ESN / Data & IA
+    country: SN
+    website: https://baamtu.com/
+    career_url: https://baamtu.com/opportunites-de-carriere/
+    collection_method: none
+    source_key: null
+    status: verified_no_listing
+    checked_on: 2026-10-21
+    verification_note: "Page « Opportunités de carrière » accessible : pas de liste d'offres, candidatures par e-mail (adresse publiée sur la page). Rien à collecter ; à surveiller manuellement."
+
+  - key: orange_digital_center
+    name: Orange Digital Center
+    sector: Télécommunications / Formation numérique
+    country: SN
+    website: null
+    career_url: null
+    collection_method: none
+    source_key: null
+    status: inaccessible
+    checked_on: 2026-10-21
+    verification_note: "orangedigitalcenters.com (avec et sans www) présente un certificat TLS invalide (hostname mismatch). La vérification TLS n'est jamais désactivée : URL non enregistrée ; à retester."

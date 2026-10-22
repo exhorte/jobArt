@@ -1,0 +1,106 @@
+# Profils de recherche créés au premier démarrage (si la table est vide). Ensuite, tout se modifie dans l'interface.
+#
+# - `positive_keywords` : termes recherchés ET utilisés pour le score « métier ». L'ordre = priorité de requête
+#   (les sources plafonnent le nombre de requêtes). Aucune annonce n'a besoin de correspondre à TOUS les mots-clés.
+# - `keyword_groups`    : compétences techniques regroupées (score « compétences »). Valeurs par défaut = HYPOTHÈSES
+#   à ajuster selon votre profil réel ; elles n'affirment rien sur vos compétences.
+# - `excluded_keywords` : un mot exclu dans le titre met le score à 0 ; dans la description, il retire 20 points.
+# - `weights`           : surcharge des pondérations (sinon 30/25/15/10/10/10) ; une clé à 0 désactive le critère.
+# - `cities[0]` = ville prioritaire. Codes pays ISO 3166-1 alpha-2.
+# - Valeurs de contract_types : cdi, cdd, stage, freelance, alternance, interim, full_time, part_time, contract.
+# - Valeurs de work_modes : onsite, hybrid, remote. experience_levels : intern, junior, mid, senior, lead.
+
+default_weights:
+  role: 30
+  skills: 25
+  location: 15
+  experience: 10
+  sector: 10
+  contract_work_mode: 10
+
+profiles:
+  - name: Software Engineer
+    description: Développement logiciel (full-stack, back-end, front-end).
+    is_active: true
+    countries: [SN]
+    cities: [Dakar]
+    positive_keywords: [Software Engineer, Développeur logiciel, Full Stack Developer, Développeur web, Backend Developer, Ingénieur logiciel, Software Developer, Frontend Developer]
+    target_roles: [Software Engineer, Full Stack Developer, Backend Developer, Frontend Developer, Développeur logiciel, Développeur web, Ingénieur logiciel]
+    keyword_groups:
+      Langages: [Python, TypeScript, JavaScript, Java, SQL]
+      Backend: [FastAPI, Django, Node.js, REST, API]
+      Frontend: [React, Next.js, Tailwind]
+      Données et DevOps: [PostgreSQL, Docker, Git, CI/CD]
+    excluded_keywords: [téléprospecteur, chauffeur, coursier, infirmier, électricien, coiffeur, vendeur, agent de sécurité]
+    sectors: []
+    contract_types: [cdi, cdd, freelance, full_time, contract]
+    work_modes: [onsite, hybrid, remote]
+    experience_levels: [junior, mid]
+
+  - name: AI Engineer
+    description: Ingénierie IA / machine learning / IA générative.
+    is_active: true
+    countries: [SN]
+    cities: [Dakar]
+    positive_keywords: [AI Engineer, Ingénieur intelligence artificielle, Machine Learning Engineer, Ingénieur machine learning, LLM Engineer, Generative AI Engineer, RAG Engineer, AI Agent Engineer, Artificial Intelligence Engineer]
+    target_roles: [AI Engineer, Machine Learning Engineer, LLM Engineer, Generative AI Engineer, Ingénieur IA, Ingénieur machine learning]
+    keyword_groups:
+      IA: [LLM, RAG, NLP, PyTorch, TensorFlow, scikit-learn, embeddings, prompt]
+      Langages: [Python, SQL]
+      Plateforme: [Docker, FastAPI, MLOps]
+    excluded_keywords: [téléprospecteur, chauffeur, coursier, infirmier, électricien, coiffeur, vendeur, agent de sécurité]
+    sectors: []
+    contract_types: [cdi, cdd, freelance, full_time, contract]
+    work_modes: [onsite, hybrid, remote]
+    experience_levels: [junior, mid]
+
+  - name: Data Engineer
+    description: Ingénierie des données, data science, MLOps.
+    is_active: true
+    countries: [SN]
+    cities: [Dakar]
+    positive_keywords: [Data Engineer, Ingénieur données, Data Scientist, Data Analyst, MLOps Engineer, Machine Learning Engineer]
+    target_roles: [Data Engineer, Data Scientist, Data Analyst, MLOps Engineer, Ingénieur données]
+    keyword_groups:
+      Données: [SQL, ETL, Spark, Airflow, dbt, PostgreSQL, BigQuery]
+      Langages: [Python]
+      Plateforme: [Docker, Kafka, MLOps]
+    excluded_keywords: [téléprospecteur, chauffeur, coursier, infirmier, électricien, coiffeur, vendeur, agent de sécurité]
+    sectors: []
+    contract_types: [cdi, cdd, freelance, full_time, contract]
+    work_modes: [onsite, hybrid, remote]
+    experience_levels: [junior, mid]
+
+  - name: Fintech et entreprises
+    description: Postes tech dans la fintech, la banque, l'assurance, les télécoms, les ESN et les startups.
+    is_active: true
+    countries: [SN]
+    cities: [Dakar]
+    positive_keywords: [Développeur, Ingénieur logiciel, Software Engineer, Data Engineer, Ingénieur IA, Chef de projet digital, Product Manager]
+    target_roles: [Développeur, Ingénieur logiciel, Software Engineer, Data Engineer, Ingénieur IA]
+    keyword_groups:
+      Langages: [Python, Java, TypeScript, SQL]
+      Paiement et SI: [API, microservices, mobile money, paiement, cloud]
+    excluded_keywords: [téléprospecteur, chauffeur, coursier, infirmier, électricien, coiffeur, vendeur, agent de sécurité]
+    sectors: [Fintech, Banque, Assurance, Télécommunications, ESN, Services informatiques, Startups technologiques]
+    contract_types: [cdi, cdd, freelance, full_time, contract]
+    work_modes: [onsite, hybrid, remote]
+    experience_levels: [junior, mid]
+    weights: {role: 25, skills: 20, location: 15, experience: 10, sector: 20, contract_work_mode: 10}
+
+  - name: Remote international
+    description: Télétravail ouvert aux candidats basés au Sénégal (restrictions géographiques vérifiées, jamais présumées).
+    is_active: true
+    countries: [SN]
+    cities: [Dakar]
+    positive_keywords: [Software Engineer, AI Engineer, Machine Learning Engineer, Full Stack Developer, Backend Developer, Data Engineer, LLM Engineer]
+    target_roles: [Software Engineer, AI Engineer, Machine Learning Engineer, Full Stack Developer, Backend Developer, Data Engineer]
+    keyword_groups:
+      Langages: [Python, TypeScript, Go, SQL]
+      Plateforme: [FastAPI, React, Docker, AWS, LLM]
+    excluded_keywords: [téléprospecteur, chauffeur, coursier, infirmier, électricien, coiffeur, vendeur, agent de sécurité]
+    sectors: []
+    contract_types: [full_time, contract, freelance, cdi]
+    work_modes: [remote]
+    experience_levels: [junior, mid, senior]
+    weights: {role: 30, skills: 25, location: 20, experience: 10, sector: 0, contract_work_mode: 15}

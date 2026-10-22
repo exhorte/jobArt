@@ -1,0 +1,79 @@
+name: jobradar
+# JobRadar - démarrage local.
+#   docker compose up -d db                  -> PostgreSQL seul (développement avec venv + npm local)
+#   docker compose up -d --build             -> pile complète : db + backend (API) + frontend
+#   SCHEDULER_MODE=off docker compose --profile worker up -d --build
+#                                            -> la veille est portée par un worker dédié (survit à un redémarrage de l'API)
+# Les valeurs viennent de .env (copier .env.example). Aucun secret n'est versionné.
+# Sécurité : l'API n'a pas d'authentification (outil personnel) -> tous les ports ne sont publiés que sur 127.0.0.1.
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-jobradar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jobradar}
+      POSTGRES_DB: ${POSTGRES_DB:-jobradar}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-54330}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-jobradar} -d ${POSTGRES_DB:-jobradar}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment: &backend-env
+      # Dans le réseau compose la base s'appelle « db » (et non 127.0.0.1:54330 comme depuis l'hôte).
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-jobradar}:${POSTGRES_PASSWORD:-jobradar}@db:5432/${POSTGRES_DB:-jobradar}
+      SCHEDULER_MODE: ${SCHEDULER_MODE:-embedded}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      HTTP_USER_AGENT: ${HTTP_USER_AGENT:-JobRadar/0.1 (personal job watcher; respects robots.txt)}
+      COLLECT_MAX_CONCURRENCY: ${COLLECT_MAX_CONCURRENCY:-3}
+      REQUEST_TIMEOUT_SECONDS: ${REQUEST_TIMEOUT_SECONDS:-20}
+      SOURCE_TIMEOUT_SECONDS: ${SOURCE_TIMEOUT_SECONDS:-240}
+      MIN_REQUEST_DELAY_SECONDS: ${MIN_REQUEST_DELAY_SECONDS:-1.5}
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8000}:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      BACKEND_URL: http://backend:8000
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3000}:3000"
+
+  # Optionnel : processus dédié à la veille (utiliser avec SCHEDULER_MODE=off pour l'API).
+  worker:
+    profiles: ["worker"]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      <<: *backend-env
+      RUN_MIGRATIONS: "0" # seule l'API applique les migrations
+    command: ["python", "-m", "jobradar.jobs.worker"]
+    healthcheck:
+      disable: true
+
+volumes:
+  pgdata:

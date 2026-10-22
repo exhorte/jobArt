@@ -1,0 +1,383 @@
+# Registre des sources JobRadar.
+#
+# - `implementation: implemented` : un connecteur existe dans backend/jobradar/collectors (clé = `connector`).
+# - `implementation: deferred`    : source à revérifier / non intégrée (raison ci-dessous).
+# - `implementation: excluded`    : source écartée (conditions d'utilisation ou accès automatisé interdit).
+# - `enabled` n'est lu qu'à la création : l'utilisateur active/désactive ensuite dans l'interface (stocké en base).
+# - `doc_status` = statut de la cartographie du 14/10/2026 (observation historique, conservée telle quelle).
+# - `checked_on` / `decision_reason` = vérification réelle faite lors de l'intégration (voir docs/source-feasibility.md).
+# - `configuration` est public : jamais de secret ici.
+#
+# Ajouter une source : créer un connecteur, l'enregistrer dans collectors/registry.py, ajouter une entrée ici.
+
+sources:
+  # ------------------------------------------------------------------ Sénégal : sites d'emploi
+  - key: emploi_dakar
+    connector: emploi_dakar
+    name: Emploi Dakar
+    base_url: https://www.emploidakar.com/
+    type: job_board
+    market: local
+    countries: [SN]
+    collection_method: json_endpoint_html   # endpoint public jm-ajax/get_listings + JSON-LD de l'annonce
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "✅ vérifié (offres du 9, 12 et 13 oct. 2026)"
+    checked_on: 2026-10-21
+    decision_reason: "Recherche par mots-clés fonctionnelle, dates de publication/limite réelles, URL directe de chaque annonce."
+    tos_note: "CGU : usage personnel et privé ; interdit d'extraire les bases de données et les liens profonds. robots.txt autorise le chemin. À réserver à un usage personnel ; demander l'accord écrit de Carriere360 pour tout autre usage."
+    configuration: {min_delay_seconds: 3.0, per_page: 20, max_queries: 6, detail_budget: 15}
+
+  - key: emploisenegal
+    connector: emploisenegal
+    name: Emploi Sénégal
+    base_url: https://www.emploisenegal.com/
+    type: job_board
+    market: local
+    countries: [SN]
+    collection_method: html_list         # cartes de liste (catégorie Informatique + pages générales filtrées localement)
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "🟡 existe, activité probable (accès direct refusé pendant la recherche du 14/10)"
+    checked_on: 2026-10-21
+    decision_reason: "Accessible le 21/10/2026 (HTTP 200, ~2 477 postes affichés). Le paramètre de recherche GET est ignoré par le site : lecture de la catégorie Informatique + filtrage local."
+    tos_note: "robots.txt : Allow /, Content-Signal search=yes ai-train=no. Pas de clause d'interdiction repérée dans la page consultée."
+    configuration: {min_delay_seconds: 2.0, host: www.emploisenegal.com, search_path: /recherche-jobs-senegal, offer_prefix: /offre-emploi-senegal/, country: SN, it_category_id: 31, category_pages: 1, general_pages: 2}
+
+  - key: africarrieres_sn
+    connector: africarrieres_sn
+    name: Africarrières Sénégal
+    base_url: https://africarrieres.com/senegal/fr/emplois
+    type: job_board
+    market: local
+    countries: [SN]
+    collection_method: html_list_jsonld
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "✅ vérifié (8 539+ offres, page pays /senegal/fr/emplois)"
+    checked_on: 2026-10-21
+    decision_reason: "Recherche ?q= fonctionnelle, URL directe, date de publication exacte dans le JSON-LD de l'annonce."
+    tos_note: "robots.txt : pages publiques autorisées aux robots génériques (ai-train=no). CGU : reproduction non autorisée du contenu du site (clause de propriété intellectuelle) ; usage ici = veille personnelle avec lien vers l'original."
+    configuration: {min_delay_seconds: 2.0, country_slug: senegal, max_queries: 6, detail_budget: 15}
+
+  - key: senjob_sn
+    connector: senjob_sn
+    name: SenJob Sénégal
+    base_url: https://senjob.com/sn/offres-d-emploi.php
+    type: job_board
+    market: local
+    countries: [SN]
+    collection_method: html_list_jsonld
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "🟡 existe, activité probable (aucune date d'offre vue sur la page d'accueil)"
+    checked_on: 2026-10-21
+    decision_reason: "Liste serveur avec filtre kw2 et catégorie Informatique, dates de publication/expiration, employeur dans le JSON-LD du détail."
+    tos_note: "robots.txt : seuls les CV/profils sont exclus. Aucune page de CGU explicite trouvée (page « À propos » sans clause)."
+    configuration: {min_delay_seconds: 2.0, category_ids: [8], max_queries: 5, detail_budget: 15}
+
+  - key: concoursn
+    connector: concoursn
+    name: ConcourSN
+    base_url: https://concoursn.com/
+    type: aggregator
+    market: local
+    countries: [SN]
+    collection_method: html_list_article
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "✅ vérifié (stage InTouch du 12 oct. 2026)"
+    checked_on: 2026-10-21
+    decision_reason: "Articles de recrutement datés ; entreprise lue dans la fiche de l'article quand elle existe, sinon estimée depuis le titre (marquée). Pas de recherche (interdite par robots.txt) : filtrage local."
+    tos_note: "CGU : extraction automatisée interdite pour les contenus payants de l'Académie (jamais consultés). Catégories d'articles publiques autorisées par robots.txt."
+    configuration: {min_delay_seconds: 2.0, pages: 2, detail_budget: 10, categories: ["/category/senegal/recrutement-senegal", "/category/senegal/stages-senegal"]}
+
+  - key: expat_dakar
+    connector: expat_dakar
+    name: Expat-Dakar Emploi
+    base_url: https://www.expat-dakar.com/emploi
+    type: job_board
+    market: local
+    countries: [SN]
+    collection_method: html_list_jsonld
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "✅ vérifié (366 annonces, dont 16 informatique)"
+    checked_on: 2026-10-21
+    decision_reason: "JSON-LD JobPosting dans la liste (date, validité, employeur) ; `sameAs` renvoie vers l'annonce d'origine (déduplication). Pertinence modeste pour un profil dev/IA."
+    tos_note: "CGU consultées (https://www.expat-dakar.com/conditions-utilisation) : aucune clause d'interdiction d'accès automatisé repérée par recherche de mots-clés (lecture humaine recommandée). robots.txt : chemin autorisé."
+    configuration: {min_delay_seconds: 2.0, max_queries: 4}
+
+  - key: senejobs
+    connector: null
+    name: SeneJobs
+    base_url: https://www.senejobs.com/
+    type: job_board
+    market: local
+    countries: [SN]
+    collection_method: unknown
+    implementation: deferred
+    enabled: false
+    verification_status: inaccessible
+    doc_status: "🟡 existe, activité probable (dates non affichées)"
+    checked_on: 2026-10-21
+    decision_reason: "Deux tentatives le 21/10/2026 : délais dépassés (20 s) puis HTTP 404 à corps vide sur / (avec et sans www), robots.txt en 404. Site inaccessible ou mal configuré : à retester."
+    configuration: {}
+
+  - key: recrutsen
+    connector: null
+    name: RecrutSen
+    base_url: https://recrutsen.com/
+    type: job_board
+    market: local
+    countries: [SN]
+    collection_method: unknown
+    implementation: deferred
+    enabled: false
+    verification_status: to_verify
+    doc_status: "🟡 existe, activité probable (« centaines d'offres » déclarées)"
+    checked_on: 2026-10-21
+    decision_reason: "Application JavaScript (Vite) : la page ne contient que le squelette (6 Ko), pas de sitemap (404), ni flux ni API documentés. Nécessiterait un rendu JavaScript (Playwright) ou une API non documentée : reporté."
+    configuration: {}
+
+  - key: sociumjob
+    connector: null
+    name: Socium Job
+    base_url: https://www.sociumjob.com/
+    type: job_board
+    market: local
+    countries: [SN]
+    collection_method: unknown
+    implementation: deferred
+    enabled: false
+    verification_status: inaccessible
+    doc_status: "🟡 existe, activité probable (start-up basée au Sénégal et en Côte d'Ivoire)"
+    checked_on: 2026-10-21
+    decision_reason: "HTTP 530 (« Origin DNS error », page Cloudflare) le 21/10/2026 : le serveur d'origine ne résout plus. Site hors service : à retester."
+    configuration: {}
+
+  # ------------------------------------------------------------------ Télétravail / international
+  - key: remote4africa
+    connector: remote4africa
+    name: Remote4Africa
+    base_url: https://remote4africa.com/
+    type: job_board
+    market: remote
+    countries: ["*"]
+    collection_method: html_list_jsonld
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "✅ vérifié (383 offres développement logiciel, 223 data/IA/ML ; accès partiel payant)"
+    checked_on: 2026-10-21
+    decision_reason: "Recherche /jobs/search?q=…&countries=SN fonctionnelle (494 résultats pour « developer »), JSON-LD avec dates et exigences géographiques."
+    tos_note: "CGU : contenu consultable pour un usage personnel uniquement ; pas de rediffusion. Une partie des offres est réservée aux abonnés : jamais contournée. robots.txt : tout autorisé."
+    configuration: {min_delay_seconds: 2.0, max_queries: 5, detail_budget: 15}
+
+  - key: himalayas
+    connector: himalayas
+    name: Himalayas (API officielle)
+    base_url: https://himalayas.app/jobs
+    type: api
+    market: remote
+    countries: ["*"]
+    collection_method: json_api
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "(absente de la cartographie) — source de remplacement pour Remote Rocketship / Wellfound"
+    checked_on: 2026-10-21
+    decision_reason: "API publique documentée (https://himalayas.app/docs/remote-jobs-api), sans clé, recherche par mot-clé et pays, restrictions géographiques et dates fournies."
+    tos_note: "Attribution obligatoire (lien visible vers himalayas.app, affiché dans l'interface). Données rafraîchies toutes les 24 h : intervalle minimal imposé."
+    configuration: {min_delay_seconds: 2.0, max_queries: 5, min_interval_minutes: 360}
+
+  - key: remoteok
+    connector: remoteok
+    name: Remote OK (API)
+    base_url: https://remoteok.com/
+    type: api
+    market: remote
+    countries: ["*"]
+    collection_method: json_api
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "⚪ cité (boards mondiaux, non visité) — source de remplacement"
+    checked_on: 2026-10-21
+    decision_reason: "API JSON publique (https://remoteok.com/api, ~100 offres récentes, 1 requête). Pas de recherche : filtrage local ; éligibilité Sénégal souvent inconnue."
+    tos_note: "Conditions de l'API : lien retour vers l'URL Remote OK et mention de la source (affichés dans l'interface) ; logo interdit."
+    configuration: {min_delay_seconds: 2.0, min_interval_minutes: 360}
+
+  - key: remotive
+    connector: null
+    name: Remotive (API)
+    base_url: https://remotive.com/remote-jobs
+    type: api
+    market: remote
+    countries: ["*"]
+    collection_method: json_api
+    implementation: excluded
+    enabled: false
+    verification_status: excluded
+    doc_status: "(absente de la cartographie)"
+    checked_on: 2026-10-21
+    decision_reason: "API gratuite testée le 21/10/2026 : 10 offres seulement par appel (déjà retardées de 24 h), catégories documentées sans effet. Valeur trop faible ; l'API complète est payante."
+    tos_note: "Ne pas republier les offres sur des sites tiers ; 4 appels/jour maximum."
+    configuration: {}
+
+  - key: remoterocketship
+    connector: null
+    name: Remote Rocketship
+    base_url: https://www.remoterocketship.com/country/africa/jobs/developer/
+    type: job_board
+    market: remote
+    countries: ["*"]
+    collection_method: none
+    implementation: excluded
+    enabled: false
+    verification_status: excluded
+    doc_status: "✅ vérifié (190 offres développeur ouvertes à l'Afrique)"
+    checked_on: 2026-10-21
+    decision_reason: "CGU §5 « Fair Use & Automation » : le scraping, les sessions de navigateur automatisées et les rafales de requêtes sont interdits. Une API payante existe (hors périmètre). Remplacée par Himalayas / Remote OK."
+    tos_note: "https://www.remoterocketship.com/terms/"
+    configuration: {}
+
+  - key: wellfound
+    connector: null
+    name: Wellfound
+    base_url: https://wellfound.com/location/africa
+    type: job_board
+    market: remote
+    countries: ["*"]
+    collection_method: none
+    implementation: excluded
+    enabled: false
+    verification_status: excluded
+    doc_status: "✅ vérifié (320 offres de start-up)"
+    checked_on: 2026-10-21
+    decision_reason: "Les CGU interdisent la collecte automatisée (« harvesting, collection or scraping ») ; robots.txt interdit les URLs d'offres (?jobId=, /_jobs/). Alternative : enregistrer manuellement l'URL d'une offre intéressante."
+    tos_note: "https://wellfound.com/terms"
+    configuration: {}
+
+  - key: linkedin_jobs
+    connector: null
+    name: LinkedIn Jobs
+    base_url: https://www.linkedin.com/jobs/
+    type: job_board
+    market: remote
+    countries: ["*"]
+    collection_method: none
+    implementation: excluded
+    enabled: false
+    verification_status: excluded
+    doc_status: "✅ (cité partout) — principal canal des postes tech"
+    checked_on: 2026-10-21
+    decision_reason: "robots.txt de linkedin.com interdit l'accès aux pages d'offres pour les robots génériques ; aucune API publique de recherche d'offres. Solution compatible : ajouter manuellement l'URL d'une annonce (bouton « Ajouter une annonce ») et configurer les alertes e-mail de LinkedIn."
+    tos_note: "Scraping interdit par les conditions d'utilisation de LinkedIn."
+    configuration: {}
+
+  - key: jobberman
+    connector: null
+    name: Jobberman (Nigeria / Ghana)
+    base_url: https://www.jobberman.com/jobs
+    type: job_board
+    market: local
+    countries: [NG, GH]
+    collection_method: none
+    implementation: excluded
+    enabled: false
+    verification_status: excluded
+    doc_status: "✅ vérifié (catégorie « Software & Data »)"
+    checked_on: 2026-10-21
+    decision_reason: "CGU art. 22 : robots, extraction automatisée (« screen scraping ») interdits ; robots.txt interdit /job/ et les URLs avec q=, keywords=, page=. Hors périmètre Sénégal de toute façon (vague régionale ultérieure)."
+    tos_note: "https://www.jobberman.com/terms"
+    configuration: {}
+
+  - key: techcabal_jobs
+    connector: null
+    name: TechCabal Jobs
+    base_url: https://techcabal.com/jobs/
+    type: aggregator
+    market: remote
+    countries: ["*"]
+    collection_method: unknown
+    implementation: deferred
+    enabled: false
+    verification_status: to_verify
+    doc_status: "✅ vérifié (offres hebdomadaires de l'écosystème tech africain)"
+    checked_on: 2026-10-21
+    decision_reason: "La page /jobs/ (HTTP 200) ne contient aucune offre dans son HTML : le contenu est chargé dynamiquement (« cette page peut prendre quelques secondes »). Source du widget non identifiée ; reporté."
+    configuration: {}
+
+  - key: careerlist_africa
+    connector: null
+    name: Career List Africa (newsletter)
+    base_url: https://careerlistafrica.substack.com/
+    type: newsletter
+    market: remote
+    countries: ["*"]
+    collection_method: rss
+    implementation: excluded
+    enabled: false
+    verification_status: excluded
+    doc_status: "✅ vérifié (newsletter hebdomadaire de postes et stages)"
+    checked_on: 2026-10-21
+    decision_reason: "Écart avec la cartographie : le flux RSS officiel (/feed) ne contient que 16 numéros, les plus récents datant d'octobre 2022. Newsletter apparemment arrêtée ; et chaque numéro est un digest, pas une annonce structurée."
+    configuration: {}
+
+  - key: impactpool
+    connector: null
+    name: Impactpool
+    base_url: https://www.impactpool.org/
+    type: job_board
+    market: remote
+    countries: ["*"]
+    collection_method: none
+    implementation: excluded
+    enabled: false
+    verification_status: excluded
+    doc_status: "✅ vérifié (organisations internationales)"
+    checked_on: 2026-10-21
+    decision_reason: "CGU : interdit de « scrape or copy platform data without permission »."
+    tos_note: "https://www.impactpool.org/about/terms_of_service"
+    configuration: {}
+
+  # ------------------------------------------------------------------ Sites carrière des employeurs
+  - key: wave_careers
+    connector: wave_careers
+    name: Wave — site carrière
+    base_url: https://www.wave.com/en/careers/
+    type: employer_career
+    market: local
+    countries: [SN]
+    collection_method: html_list
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "(employeur cité : wave.com/en/careers)"
+    checked_on: 2026-10-21
+    decision_reason: "Page carrière officielle : 74 offres listées avec URL directe et lieu (HTML serveur). Pas de date de publication."
+    tos_note: "Pas de robots.txt (404). Page publique de l'employeur."
+    configuration: {min_delay_seconds: 2.0, detail_budget: 10}
+
+  - key: manual
+    connector: null
+    name: Ajout manuel d'annonce
+    base_url: https://localhost/
+    type: manual
+    market: local
+    countries: ["*"]
+    collection_method: manual
+    implementation: implemented
+    enabled: true
+    verification_status: verified
+    doc_status: "(solution de repli pour LinkedIn et les sources bloquées)"
+    checked_on: 2026-10-21
+    decision_reason: "L'utilisateur saisit l'URL et les champs connus ; le serveur n'accède jamais à cette URL."
+    configuration: {}

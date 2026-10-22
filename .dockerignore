@@ -1,0 +1,17 @@
+# Contexte de build du backend (racine du dépôt) : n'envoyer que le nécessaire.
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+**/__pycache__
+**/*.pyc
+**/.venv
+**/.pytest_cache
+**/.ruff_cache
+**/*.egg-info
+**/*.sqlite
+backend/tests
+frontend
+docs
+scripts
