@@ -6,7 +6,7 @@ Veille personnelle des offres d'emploi, **Sénégal d'abord** (extensible à l'A
 réelles sur des sources publiques, les normalise, supprime les doublons, calcule un **score de pertinence explicable** par rapport à vos profils de
 recherche et les présente dans une interface web. Une veille automatique (6 h par défaut, configurable) relance la collecte.
 
-- Application **locale et mono-utilisateur** (aucune authentification : ne pas l'exposer sur Internet).
+- Application **mono-utilisateur**, pensée pour un usage local (aucune authentification par défaut : ne pas l'exposer sur Internet telle quelle). Pour un site public : verrou HTTP Basic sur le frontend (`BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD`) et jeton d'API (`API_TOKEN` côté backend, `BACKEND_API_TOKEN` côté frontend) — voir `.env.example`.
 - **Aucune donnée fictive** : une information absente d'une annonce reste absente (« Date inconnue », score « non évalué »…).
 - Respect des sources : `robots.txt`, débit limité, aucun contournement de CAPTCHA ni de connexion. Les sources dont les conditions interdisent
   l'extraction sont **exclues** et la raison est affichée ; pour celles-ci, l'ajout manuel d'une annonce reste possible.

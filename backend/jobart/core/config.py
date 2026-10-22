@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+import os
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # backend/jobart/core/config.py -> racine du dépôt = parents[3]
@@ -23,6 +24,11 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     cors_origins: str = "http://localhost:3000"
 
+    # Jeton partagé exigé par l'API (en-tête `Authorization: Bearer`). Vide = pas d'authentification (usage local).
+    api_token: str = ""
+    # Refuse de démarrer sans jeton : forcé aussi quand RENDER est défini, pour ne jamais publier une API ouverte.
+    require_api_token: bool = False
+
     config_dir: Path = REPO_ROOT / "config"
 
     # "embedded" : l'API héberge le planificateur ; "off" : un worker séparé le porte.
@@ -39,12 +45,27 @@ class Settings(BaseSettings):
     max_response_bytes: int = 6_000_000
     run_stale_after_seconds: int = 900  # un run sans battement de cœur est déclaré interrompu
 
+    @field_validator("database_url")
+    @classmethod
+    def _psycopg_driver(cls, v: str) -> str:
+        # Les hébergeurs fournissent `postgres://` ou `postgresql://` : SQLAlchemy y choisirait psycopg2 (non installé).
+        for prefix in ("postgres://", "postgresql://"):
+            if v.startswith(prefix):
+                return "postgresql+psycopg://" + v[len(prefix):]
+        return v
+
     @field_validator("scheduler_mode")
     @classmethod
     def _check_mode(cls, v: str) -> str:
         if v not in {"embedded", "off"}:
             raise ValueError("SCHEDULER_MODE doit valoir 'embedded' ou 'off'")
         return v
+
+    @model_validator(mode="after")
+    def _check_token(self) -> Settings:
+        if (self.require_api_token or os.environ.get("RENDER")) and not self.api_token:
+            raise ValueError("API_TOKEN est obligatoire (REQUIRE_API_TOKEN=1 ou hébergement Render) : l'API ne démarre pas ouverte")
+        return self
 
     @property
     def cors_origin_list(self) -> list[str]:

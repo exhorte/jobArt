@@ -6,6 +6,8 @@ import type { NextRequest } from "next/server";
  * - `BACKEND_URL` est lu à chaque requête (une même image Docker sert tous les environnements).
  * - Seul le préfixe `/api/` du backend est joignable : le client ne peut pas choisir une autre URL de destination.
  * - Les corps et les en-têtes utiles sont transmis tels quels ; les erreurs réseau deviennent un 502 lisible.
+ * - `BACKEND_API_TOKEN` (= `API_TOKEN` du backend) est ajouté en `Authorization: Bearer` ; l'en-tête reçu du navigateur
+ *   (identifiants du verrou du site) n'est jamais transmis.
  */
 const BACKEND_URL = () => (process.env.BACKEND_URL ?? "http://127.0.0.1:8000").replace(/\/+$/, "");
 
@@ -21,6 +23,8 @@ async function proxy(req: NextRequest, ctx: RouteContext<"/api/[...path]">): Pro
     const value = req.headers.get(name);
     if (value) headers.set(name, value);
   }
+  const apiToken = process.env.BACKEND_API_TOKEN;
+  if (apiToken) headers.set("authorization", `Bearer ${apiToken}`);
   const hasBody = !["GET", "HEAD"].includes(req.method);
 
   try {
