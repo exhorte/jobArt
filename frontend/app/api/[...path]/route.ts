@@ -11,6 +11,11 @@ import type { NextRequest } from "next/server";
  */
 const BACKEND_URL = () => (process.env.BACKEND_URL ?? "http://127.0.0.1:8000").replace(/\/+$/, "");
 
+// Un backend gratuit endormi (Render free) met ~30-60 s à se réveiller : on attend jusqu'à 55 s au lieu de la limite
+// par défaut de la plateforme (10 s sur Vercel), puis on répond 502 proprement. Ignoré en local et en Docker.
+export const maxDuration = 60;
+const UPSTREAM_TIMEOUT_MS = 55_000;
+
 const FORWARDED_REQUEST_HEADERS = ["accept", "content-type"];
 const DROPPED_RESPONSE_HEADERS = new Set(["content-encoding", "content-length", "transfer-encoding", "connection"]);
 
@@ -34,6 +39,7 @@ async function proxy(req: NextRequest, ctx: RouteContext<"/api/[...path]">): Pro
       body: hasBody ? await req.arrayBuffer() : undefined,
       cache: "no-store",
       redirect: "manual",
+      signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS),
     });
     const out = new Headers();
     upstream.headers.forEach((value, key) => {
