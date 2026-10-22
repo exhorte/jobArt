@@ -9,19 +9,19 @@ from datetime import UTC, datetime
 import httpx
 import pytest
 
-from jobradar.collectors.africarrieres import AfricarrieresConnector
-from jobradar.collectors.base import SearchParameters
-from jobradar.collectors.concoursn import ConcourSNConnector, parse_fiche, split_title
-from jobradar.collectors.emploi_dakar import EmploiDakarConnector
-from jobradar.collectors.emploisenegal import EmploiSenegalConnector
-from jobradar.collectors.expat_dakar import ExpatDakarConnector
-from jobradar.collectors.himalayas import HimalayasConnector
-from jobradar.collectors.registry import CONNECTORS, UnknownConnector, build_connector
-from jobradar.collectors.remote4africa import Remote4AfricaConnector
-from jobradar.collectors.remoteok import RemoteOKConnector
-from jobradar.collectors.senjob import SenJobConnector
-from jobradar.collectors.wave import WaveConnector
-from jobradar.core.errors import NormalizationError, ParseError
+from jobart.collectors.africarrieres import AfricarrieresConnector
+from jobart.collectors.base import SearchParameters
+from jobart.collectors.concoursn import ConcourSNConnector, parse_fiche, split_title
+from jobart.collectors.emploi_dakar import EmploiDakarConnector
+from jobart.collectors.emploisenegal import EmploiSenegalConnector
+from jobart.collectors.expat_dakar import ExpatDakarConnector
+from jobart.collectors.himalayas import HimalayasConnector
+from jobart.collectors.registry import CONNECTORS, UnknownConnector, build_connector
+from jobart.collectors.remote4africa import Remote4AfricaConnector
+from jobart.collectors.remoteok import RemoteOKConnector
+from jobart.collectors.senjob import SenJobConnector
+from jobart.collectors.wave import WaveConnector
+from jobart.core.errors import NormalizationError, ParseError
 
 from .conftest import fixture_json, fixture_text, json_response, make_client, make_pool, route, text_response
 
@@ -76,7 +76,7 @@ async def test_emploi_dakar_skips_detail_for_known_urls():
         detail_calls.append(str(req.url))
         return text_response(fixture_text("emploi_dakar_job.html"))
 
-    from jobradar.services.urls import url_key
+    from jobart.services.urls import url_key
 
     c0, raws0 = await run_search(EmploiDakarConnector, {r"get_listings": json_response(listing)}, SearchParameters(keywords=["x"], fetch_details=False))
     known = {url_key(r.data["url"]) for r in raws0}
@@ -97,7 +97,7 @@ async def test_emploi_dakar_structure_change_is_a_parse_error():
 def test_emploi_dakar_rejects_non_deep_links():
     pool = make_pool(route({}))
     c = EmploiDakarConnector(make_client(pool, EmploiDakarConnector), {})
-    from jobradar.collectors.base import RawJob
+    from jobart.collectors.base import RawJob
 
     for bad in ("https://www.emploidakar.com/", "https://www.emploidakar.com/offres-demploi-au-senegal/", "https://autre.com/offre/1"):
         with pytest.raises(NormalizationError):
@@ -235,7 +235,7 @@ async def test_expat_dakar_jsonld_same_as_and_zero_results_404():
 
 
 async def test_expat_dakar_real_404_without_results_page_is_error():
-    from jobradar.core.errors import SourceUnavailable
+    from jobart.core.errors import SourceUnavailable
 
     with pytest.raises(SourceUnavailable):
         await run_search(ExpatDakarConnector, {r"expat-dakar\.com/emploi": text_response("not found", status=404)}, SearchParameters(keywords=["x"]))

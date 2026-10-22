@@ -8,7 +8,7 @@ import sys
 
 def setup_logging(level: str = "INFO") -> None:
     root = logging.getLogger()
-    if getattr(root, "_jobradar_configured", False):
+    if getattr(root, "_jobart_configured", False):
         root.setLevel(level.upper())
         return
     handler = logging.StreamHandler(sys.stdout)
@@ -17,7 +17,7 @@ def setup_logging(level: str = "INFO") -> None:
     )
     root.handlers = [handler]
     root.setLevel(level.upper())
-    root._jobradar_configured = True  # type: ignore[attr-defined]
+    root._jobart_configured = True  # type: ignore[attr-defined]
     # httpx logge chaque requête en INFO : trop bavard, mais utile en DEBUG.
     logging.getLogger("httpx").setLevel(logging.WARNING)
     logging.getLogger("apscheduler").setLevel(logging.WARNING)

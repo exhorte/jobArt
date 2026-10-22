@@ -65,7 +65,7 @@ function DashboardView({ d }: { d: Dashboard }) {
               <EmptyState
                 icon={Briefcase}
                 action={<LaunchRunButton variant="outline" size="lg" />}
-                hint={lastRun ? "La dernière collecte n'a enregistré aucune offre : consultez l'historique pour le détail par source." : "JobRadar ne contient aucune offre : lancez une première collecte sur vos sources activées."}
+                hint={lastRun ? "La dernière collecte n'a enregistré aucune offre : consultez l'historique pour le détail par source." : "jobArt ne contient aucune offre : lancez une première collecte sur vos sources activées."}
               />
             ) : (
               <WorkCard d={d} />
@@ -109,7 +109,7 @@ function DashboardView({ d }: { d: Dashboard }) {
 
       {!empty && (
         <section className="flex flex-col gap-4">
-          <PageHeader title={<h2 className="text-xl font-semibold tracking-tight">Détectées récemment</h2>} subtitle="Les plus récentes d'après la première détection par JobRadar" icon={Clock} />
+          <PageHeader title={<h2 className="text-xl font-semibold tracking-tight">Détectées récemment</h2>} subtitle="Les plus récentes d'après la première détection par jobArt" icon={Clock} />
           <OffersTable offers={d.recent} compact />
           <div>
             <Button asChild variant="secondary">

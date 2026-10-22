@@ -13,12 +13,12 @@ from typing import Any
 import pytest
 from sqlalchemy import func, select
 
-from jobradar.core.clock import utcnow
-from jobradar.core.config import Settings
-from jobradar.core.db import Database
-from jobradar.core.errors import ErrorType
-from jobradar.models import JobOffer, JobSource, RunSourceStatus, RunStatus, SearchProfile, SearchRun, SearchRunSource
-from jobradar.services.runner import (
+from jobart.core.clock import utcnow
+from jobart.core.config import Settings
+from jobart.core.db import Database
+from jobart.core.errors import ErrorType
+from jobart.models import JobOffer, JobSource, RunSourceStatus, RunStatus, SearchProfile, SearchRun, SearchRunSource
+from jobart.services.runner import (
     NoSourcesError,
     ProfileNotFound,
     RunService,
@@ -26,7 +26,7 @@ from jobradar.services.runner import (
     build_search_parameters,
     source_applies_to_profile,
 )
-from jobradar.services.scoring import ProfileCriteria
+from jobart.services.scoring import ProfileCriteria
 
 from .conftest import FakeConnector, fake_factory
 from .conftest import json_jobs as jobs

@@ -1,4 +1,4 @@
-/** Miroir des schémas Pydantic du backend (backend/jobradar/schemas/*). Les dates arrivent en ISO 8601 (UTC). */
+/** Miroir des schémas Pydantic du backend (backend/jobart/schemas/*). Les dates arrivent en ISO 8601 (UTC). */
 
 export type UserStatus = "new" | "seen" | "saved" | "applied" | "ignored";
 export type LifecycleStatus = "listed" | "stale" | "deadline_passed" | "closed";

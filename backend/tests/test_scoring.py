@@ -1,6 +1,6 @@
 """Score de pertinence : fonction pure, règles explicites, aucun champ absent n'est un point positif."""
 
-from jobradar.services.scoring import (
+from jobart.services.scoring import (
     DEFAULT_WEIGHTS,
     ProfileCriteria,
     ScorableOffer,

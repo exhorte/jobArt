@@ -234,7 +234,7 @@ function OffersView() {
             <Field id="f-pub" label="Publiée depuis le" hint="Date déclarée par la source">
               <Input id="f-pub" type="date" value={filters.published_from} onChange={set("published_from")} />
             </Field>
-            <Field id="f-seen" label="Détectée depuis le" hint="Première détection par JobRadar">
+            <Field id="f-seen" label="Détectée depuis le" hint="Première détection par jobArt">
               <Input id="f-seen" type="date" value={filters.first_seen_from} onChange={set("first_seen_from")} />
             </Field>
             <div className="flex items-end">

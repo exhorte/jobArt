@@ -1,6 +1,6 @@
-# Registre des sources JobRadar.
+# Registre des sources jobArt.
 #
-# - `implementation: implemented` : un connecteur existe dans backend/jobradar/collectors (clé = `connector`).
+# - `implementation: implemented` : un connecteur existe dans backend/jobart/collectors (clé = `connector`).
 # - `implementation: deferred`    : source à revérifier / non intégrée (raison ci-dessous).
 # - `implementation: excluded`    : source écartée (conditions d'utilisation ou accès automatisé interdit).
 # - `enabled` n'est lu qu'à la création : l'utilisateur active/désactive ensuite dans l'interface (stocké en base).

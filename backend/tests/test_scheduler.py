@@ -9,12 +9,12 @@ from typing import Any
 import pytest
 from sqlalchemy import select, update
 
-from jobradar.core.clock import utcnow
-from jobradar.core.config import Settings
-from jobradar.core.db import Database
-from jobradar.jobs.scheduler import MAX_INTERVAL_MINUTES, MIN_INTERVAL_MINUTES, SchedulerService
-from jobradar.models import JobSource, RunStatus, SchedulerState, SearchRun
-from jobradar.services.runner import RunService
+from jobart.core.clock import utcnow
+from jobart.core.config import Settings
+from jobart.core.db import Database
+from jobart.jobs.scheduler import MAX_INTERVAL_MINUTES, MIN_INTERVAL_MINUTES, SchedulerService
+from jobart.models import JobSource, RunStatus, SchedulerState, SearchRun
+from jobart.services.runner import RunService
 
 from .conftest import fake_factory
 from .conftest import json_jobs as _json_jobs
@@ -291,7 +291,7 @@ async def test_start_and_stop_lifecycle(seeded: Database, settings: Settings) ->
 
 async def test_worker_process_carries_the_scheduler(db: Database, settings: Settings) -> None:
     """Le worker (SCHEDULER_MODE=off côté API) prend le bail, bat le cœur, puis rend le bail à l'arrêt."""
-    from jobradar.jobs.worker import run_worker
+    from jobart.jobs.worker import run_worker
 
     observer = make_scheduler(db, settings, "observer")
     stop = asyncio.Event()

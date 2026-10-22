@@ -8,9 +8,9 @@ from __future__ import annotations
 
 import pytest
 
-from jobradar.collectors.http import HttpPool
-from jobradar.collectors.registry import CONNECTORS, build_connector
-from jobradar.core.config import Settings
+from jobart.collectors.http import HttpPool
+from jobart.collectors.registry import CONNECTORS, build_connector
+from jobart.core.config import Settings
 
 pytestmark = pytest.mark.network
 

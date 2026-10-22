@@ -5,8 +5,8 @@ import time
 import httpx
 import pytest
 
-from jobradar.collectors.http import HttpPool, PoliteClient, looks_like_challenge, parse_robots
-from jobradar.core.errors import (
+from jobart.collectors.http import HttpPool, PoliteClient, looks_like_challenge, parse_robots
+from jobart.core.errors import (
     AccessBlocked,
     NetworkError,
     RateLimited,
@@ -19,7 +19,7 @@ from .conftest import make_pool, text_response
 
 
 # ---------------------------------------------------------------- parseur robots.txt (RFC 9309)
-def rules(text, token="jobradar"):
+def rules(text, token="jobart"):
     return parse_robots(text, token)
 
 
@@ -40,8 +40,8 @@ def test_robots_wildcards_and_end_anchor():
 
 
 def test_robots_specific_group_overrides_star_and_missing_group_allows():
-    text = "User-agent: *\nDisallow: /\n\nUser-agent: JobRadar\nDisallow: /admin/\n"
-    r = rules(text, token="JobRadar")
+    text = "User-agent: *\nDisallow: /\n\nUser-agent: jobArt\nDisallow: /admin/\n"
+    r = rules(text, token="jobArt")
     assert r.allowed("/jobs/1") and not r.allowed("/admin/x")
     assert rules("User-agent: GPTBot\nDisallow: /\n").allowed("/anything")  # aucun groupe applicable
 
@@ -268,7 +268,7 @@ async def test_rate_limiter_enforces_minimum_delay_per_host():
 
 
 async def test_invalid_json_is_a_parse_error():
-    from jobradar.core.errors import ParseError
+    from jobart.core.errors import ParseError
 
     pool, c = client_for(lambda req: httpx.Response(404) if req.url.path == "/robots.txt" else text_response("<html>pas du json</html>"))
     try:

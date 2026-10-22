@@ -4,9 +4,9 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from jobradar.models import OfferStatus
-from jobradar.services.dates import from_epoch, is_relative_date, parse_datetime
-from jobradar.services.freshness import age_info, compute_status, is_source_missing
+from jobart.models import OfferStatus
+from jobart.services.dates import from_epoch, is_relative_date, parse_datetime
+from jobart.services.freshness import age_info, compute_status, is_source_missing
 
 NOW = datetime(2026, 10, 21, 12, 0, tzinfo=UTC)
 

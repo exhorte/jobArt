@@ -2,7 +2,7 @@
 
 import pytest
 
-from jobradar.services.enrich import (
+from jobart.services.enrich import (
     classify_remote_eligibility,
     detect_contract,
     detect_experience_level,
@@ -10,8 +10,8 @@ from jobradar.services.enrich import (
     detect_work_mode,
     map_schema_employment_type,
 )
-from jobradar.services.geo import parse_location
-from jobradar.services.text import (
+from jobart.services.geo import parse_location
+from jobart.services.text import (
     fix_mojibake,
     html_to_text,
     jaccard,
@@ -29,7 +29,7 @@ def test_normalize_text_strips_accents_case_and_punctuation():
 
 
 def test_normalize_title_removes_gender_markers_refs_and_location_suffix():
-    from jobradar.services.geo import LOCATION_WORDS
+    from jobart.services.geo import LOCATION_WORDS
 
     assert normalize_title("Développeur(euse) Python (H/F) - Dakar", location_words=LOCATION_WORDS) == "developpeur python"
     assert normalize_title("Ingénieur Données F/H Réf: ABC-123") == "ingenieur donnees"

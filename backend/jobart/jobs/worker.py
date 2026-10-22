@@ -1,4 +1,4 @@
-"""Processus dédié à la veille automatique : `python -m jobradar.jobs.worker`.
+"""Processus dédié à la veille automatique : `python -m jobart.jobs.worker`.
 
 À utiliser avec SCHEDULER_MODE=off côté API (l'API ne porte alors aucun planificateur) : la veille survit à un
 redémarrage de l'API. Plusieurs workers (ou un worker + une API en mode « embedded ») ne se gênent pas : un seul détient

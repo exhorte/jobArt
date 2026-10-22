@@ -149,7 +149,7 @@ def render() -> str:
         "- Le statut de la cartographie du 14/10/2026 est conservé tel quel, comme observation historique ; les écarts constatés le 21/10/2026 "
         "figurent dans la colonne « Résultat du test ».",
         "- La disponibilité d'URLs directes et de dates de publication est précisée source par source dans la colonne « Résultat du test ». "
-        "Quand une source ne fournit pas de date, JobRadar affiche « Date inconnue » et n'en déduit jamais une.",
+        "Quand une source ne fournit pas de date, jobArt affiche « Date inconnue » et n'en déduit jamais une.",
         f"- Dernières vérifications consignées : {', '.join(checked) if checked else 'aucune'}.",
         "",
         "## Synthèse",

@@ -1,4 +1,4 @@
-# JobRadar - image backend (API FastAPI + worker de veille).
+# jobArt - image backend (API FastAPI + worker de veille).
 # Contexte de build : la RACINE du dépôt (le backend lit ../config/*.yaml) :
 #   docker compose build backend        ou      docker build -f backend/Dockerfile .
 FROM python:3.14-slim
@@ -10,7 +10,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONPATH=/app/backend
 
 # Utilisateur non privilégié : la collecte n'a besoin d'aucun droit particulier.
-RUN useradd --system --create-home --uid 10001 jobradar
+RUN useradd --system --create-home --uid 10001 jobart
 
 WORKDIR /app/backend
 
@@ -21,17 +21,17 @@ RUN pip install -r requirements.lock
 
 COPY backend/pyproject.toml backend/alembic.ini backend/docker-entrypoint.sh ./
 COPY backend/alembic ./alembic
-COPY backend/jobradar ./jobradar
+COPY backend/jobart ./jobart
 # config/ : sources, employeurs, profils par défaut (REPO_ROOT = /app dans l'image).
 COPY config /app/config
 
-RUN chmod +x docker-entrypoint.sh && chown -R jobradar:jobradar /app
-USER jobradar
+RUN chmod +x docker-entrypoint.sh && chown -R jobart:jobart /app
+USER jobart
 
 EXPOSE 8000
 HEALTHCHECK --interval=15s --timeout=5s --start-period=40s --retries=5 \
     CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=4).status == 200 else 1)"
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
-# Par défaut : migrations puis API. Pour le worker de veille : command: ["python", "-m", "jobradar.jobs.worker"]
-CMD ["uvicorn", "jobradar.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Par défaut : migrations puis API. Pour le worker de veille : command: ["python", "-m", "jobart.jobs.worker"]
+CMD ["uvicorn", "jobart.main:app", "--host", "0.0.0.0", "--port", "8000"]

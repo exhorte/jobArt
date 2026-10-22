@@ -38,7 +38,7 @@ async function proxy(req: NextRequest, ctx: RouteContext<"/api/[...path]">): Pro
     return new Response(upstream.status === 204 ? null : upstream.body, { status: upstream.status, headers: out });
   } catch {
     return Response.json(
-      { detail: "Le backend JobRadar est injoignable. Vérifiez qu'il est démarré (voir le README)." },
+      { detail: "Le backend jobArt est injoignable. Vérifiez qu'il est démarré (voir le README)." },
       { status: 502 },
     );
   }

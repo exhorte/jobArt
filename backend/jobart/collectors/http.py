@@ -80,7 +80,7 @@ def _robots_match(pattern: str, path: str) -> bool:
 
 
 def parse_robots(text: str, product_token: str) -> RobotsRules:
-    """Sélectionne le groupe du jeton produit (ex. « jobradar »), sinon le groupe « * », sinon tout autorisé."""
+    """Sélectionne le groupe du jeton produit (ex. « jobart »), sinon le groupe « * », sinon tout autorisé."""
     token = product_token.lower()
     groups: list[tuple[list[str], RobotsRules]] = []
     agents: list[str] = []
@@ -147,7 +147,7 @@ class HttpPool:
         transport: httpx.AsyncBaseTransport | None = None,
     ) -> None:
         self.user_agent = user_agent
-        self.product_token = re.split(r"[/\s]", user_agent.strip(), maxsplit=1)[0] or "jobradar"
+        self.product_token = re.split(r"[/\s]", user_agent.strip(), maxsplit=1)[0] or "jobart"
         self.max_response_bytes = max_response_bytes
         self.default_min_delay = default_min_delay
         self.client = httpx.AsyncClient(

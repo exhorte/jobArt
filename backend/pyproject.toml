@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "jobradar"
+name = "jobart"
 version = "0.1.0"
-description = "JobRadar - agrégateur personnel d'offres d'emploi (mono-utilisateur, local)"
+description = "jobArt - agrégateur personnel d'offres d'emploi (mono-utilisateur, local)"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115,<1.0",
@@ -30,7 +30,7 @@ dev = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["jobradar*"]
+include = ["jobart*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -50,4 +50,4 @@ ignore = ["B008"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["E501"]  # jeux de données de test : lisibilité plutôt que longueur de ligne
-"jobradar/services/enrich.py" = ["E501"]  # tables de mots-clés (une entrée par ligne)
+"jobart/services/enrich.py" = ["E501"]  # tables de mots-clés (une entrée par ligne)

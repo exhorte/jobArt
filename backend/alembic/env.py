@@ -7,8 +7,8 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
-from jobradar.core.config import get_settings
-from jobradar.models import Base
+from jobart.core.config import get_settings
+from jobart.models import Base
 
 config = context.config
 if config.config_file_name is not None:

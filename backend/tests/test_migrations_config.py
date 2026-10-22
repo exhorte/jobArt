@@ -14,13 +14,13 @@ from alembic.config import Config
 from sqlalchemy import create_engine, inspect, select
 
 from alembic import command
-from jobradar.collectors.registry import CONNECTORS
-from jobradar.core.config import REPO_ROOT, Settings
-from jobradar.core.db import Database
-from jobradar.models import Base, JobSource, SchedulerState, SearchProfile
-from jobradar.schemas.profiles import ProfileCreate
-from jobradar.services.bootstrap import bootstrap, load_employers, seed_profiles, sync_sources
-from jobradar.services.scoring import DEFAULT_WEIGHTS
+from jobart.collectors.registry import CONNECTORS
+from jobart.core.config import REPO_ROOT, Settings
+from jobart.core.db import Database
+from jobart.models import Base, JobSource, SchedulerState, SearchProfile
+from jobart.schemas.profiles import ProfileCreate
+from jobart.services.bootstrap import bootstrap, load_employers, seed_profiles, sync_sources
+from jobart.services.scoring import DEFAULT_WEIGHTS
 
 BACKEND = pathlib.Path(__file__).resolve().parents[1]
 CONFIG = REPO_ROOT / "config"

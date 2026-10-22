@@ -111,7 +111,7 @@ function OfferView({ offer: o, onChange }: { offer: OfferDetail; onChange: (o: O
             <CardContent className="px-6 py-5">
               <dl className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
                 <Fact term="Publication (déclarée par la source)">{o.published_at ? formatDate(o.published_at) : "Date inconnue"}</Fact>
-                <Fact term="Première détection par JobRadar">{formatDateTime(o.first_seen_at)}</Fact>
+                <Fact term="Première détection par jobArt">{formatDateTime(o.first_seen_at)}</Fact>
                 <Fact term="Dernière observation">{formatDateTime(o.last_seen_at)}</Fact>
                 <Fact term="Date limite de candidature">{o.application_deadline ? formatDate(o.application_deadline) : "Non précisée"}</Fact>
                 <Fact term="Salaire annoncé">{salary ?? "Non précisé"}</Fact>
@@ -126,7 +126,7 @@ function OfferView({ offer: o, onChange }: { offer: OfferDetail; onChange: (o: O
               </dl>
               {o.estimated_fields.length > 0 && (
                 <p className="mt-4 text-xs text-muted-foreground">
-                  Déduit par JobRadar à partir du texte (non déclaré par la source) : {o.estimated_fields.map((f) => ESTIMATED_LABELS[f] ?? f).join(", ")}.
+                  Déduit par jobArt à partir du texte (non déclaré par la source) : {o.estimated_fields.map((f) => ESTIMATED_LABELS[f] ?? f).join(", ")}.
                 </p>
               )}
             </CardContent>

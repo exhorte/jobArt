@@ -67,7 +67,7 @@ export default function SourcesPage() {
           </div>
           <SourcesList sources={shown} onChanged={reload} />
           <Callout title="À propos des sources exclues ou différées">
-            Chaque source écartée affiche la raison de la décision (conditions d&rsquo;utilisation, robots.txt, protection anti-robot, accès nécessitant une connexion…). JobRadar ne contourne ni
+            Chaque source écartée affiche la raison de la décision (conditions d&rsquo;utilisation, robots.txt, protection anti-robot, accès nécessitant une connexion…). jobArt ne contourne ni
             CAPTCHA, ni authentification, ni blocage. Pour une offre vue sur une de ces plateformes, utilisez « Ajouter une annonce » dans la page Offres.
           </Callout>
         </Loadable>

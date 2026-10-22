@@ -1,4 +1,4 @@
-"""Modèle relationnel JobRadar (SQLAlchemy 2.0).
+"""Modèle relationnel jobArt (SQLAlchemy 2.0).
 
 Types portables : JSON (JSONB sous PostgreSQL), datetimes toujours UTC et « aware ».
 Les champs inconnus restent NULL : on ne fabrique jamais une date, une entreprise, un salaire ou une URL.

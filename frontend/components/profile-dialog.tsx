@@ -211,7 +211,7 @@ function ProfileForm({ profile, meta, onClose, onSaved }: { profile: Profile | n
         </Field>
       </Section>
 
-      <Section title="Compétences" description="Groupes de compétences utilisés pour le score. Ce sont des hypothèses à ajuster : JobRadar n'affirme rien sur vos compétences.">
+      <Section title="Compétences" description="Groupes de compétences utilisés pour le score. Ce sont des hypothèses à ajuster : jobArt n'affirme rien sur vos compétences.">
         <div className="flex flex-col gap-4">
           {f.groups.map((g, i) => (
             <div key={g.uid} className="grid grid-cols-1 gap-3 rounded-lg border bg-muted/30 p-3 sm:grid-cols-[12rem_1fr_auto] sm:items-start">

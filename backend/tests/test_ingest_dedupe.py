@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 
-from jobradar.models import (
+from jobart.models import (
     JobOffer,
     JobOfferSource,
     OfferScore,
@@ -14,8 +14,8 @@ from jobradar.models import (
     OfferUrlKey,
     SavedJob,
 )
-from jobradar.services.ingest import ingest_jobs, refresh_offer_statuses, rescore_all
-from jobradar.services.scoring import ProfileCriteria
+from jobart.services.ingest import ingest_jobs, refresh_offer_statuses, rescore_all
+from jobart.services.scoring import ProfileCriteria
 
 from .conftest import NOW, make_job, make_profile, make_source
 
@@ -237,7 +237,7 @@ def test_rescore_all_after_profile_change_and_deleted_profile_scores_removed(wor
     ing(world, a, make_job(source_job_id="1", url="https://src_a.example.com/o/1", title="Software Engineer", description="Python " * 20))
     before = offers(session)[0].best_score
     p = session.scalars(select(OfferScore)).first().profile_id
-    from jobradar.models import SearchProfile
+    from jobart.models import SearchProfile
     prof = session.get(SearchProfile, p)
     prof.positive_keywords, prof.target_roles = ["Comptable"], ["Comptable"]
     session.flush()

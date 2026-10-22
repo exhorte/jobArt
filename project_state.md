@@ -1,4 +1,6 @@
-# État du projet JobRadar (mis à jour le 21/10/2026)
+# État du projet jobArt (mis à jour le 21/10/2026)
+
+> **Renommage du 22/10/2026** : le projet s'appelle désormais **jobArt** (ex-JobRadar). Déploiement Vercel du frontend **pas encore fait** : en attente de décisions (hébergement du backend et de la base, protection d'accès). Détail et reprise : `../05_memoire_session/2026-10-22_renommage_jobart.md`.
 
 ## Objectif
 Agrégateur personnel (local, mono-utilisateur) d'offres d'emploi, Sénégal d'abord : collecte réelle, normalisation, déduplication, score /100 explicable,
@@ -15,7 +17,7 @@ Détail : [docs/architecture.md](docs/architecture.md).
 - Docker : images backend/frontend construites, pile `db + backend + frontend` démarrée et saine, migrations auto, proxy OK, utilisateurs non-root ; worker optionnel testé (bail exclusif).
 
 ## Tests exécutés (21/10/2026)
-- Backend : 249 passés sur SQLite **et** sur PostgreSQL (base `jobradar_test`) ; `ruff check` propre ; 10 tests `network` passés séparément.
+- Backend : 249 passés sur SQLite **et** sur PostgreSQL (base `jobradar_test`, nom d'avant le renommage) ; `ruff check` propre ; 10 tests `network` passés séparément.
 - Frontend : `tsc`, `eslint`, 20 tests Vitest, `next build` OK.
 - Doc : `scripts/gen_source_feasibility.py --check` à jour.
 

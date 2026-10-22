@@ -79,7 +79,7 @@ export function AppFooter({ note }: { note?: string }) {
   return (
     <footer className="border-t px-4 sm:px-6 lg:px-10">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 py-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <p>JobRadar · usage personnel</p>
+        <p>jobArt · usage personnel</p>
         {note && <p className="max-w-xl sm:text-right">{note}</p>}
       </div>
     </footer>

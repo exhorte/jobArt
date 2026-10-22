@@ -4,7 +4,7 @@ Méthode : recherche publique `/jobs/search?q=…&countries=SN` (HTML rendu côt
 puis JSON-LD `JobPosting` de la page de l'offre (date exacte, validité, exigences géographiques `applicantLocation
 Requirements`, salaire, employeur) — uniquement pour les offres nouvelles.
 
-Limites : une partie des offres est réservée aux abonnés (le site l'indique) ; JobRadar n'accède qu'aux pages publiques
+Limites : une partie des offres est réservée aux abonnés (le site l'indique) ; jobArt n'accède qu'aux pages publiques
 et ne tente aucun contournement. CGU : usage personnel uniquement, pas de rediffusion. Aucune date n'apparaît sur les
 cartes de liste de façon exploitable (« Oct 09 », sans année) : seule la date du JSON-LD est utilisée.
 """

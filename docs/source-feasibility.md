@@ -9,7 +9,7 @@
 - **« Écartée sur lecture des conditions »** : aucune collecte n'a été tentée ; la décision s'appuie sur les CGU et/ou le `robots.txt` cités.
 - Les conditions d'utilisation ont été lues dans les pages consultées ; **ce n'est pas un avis juridique**. En cas de doute, une lecture humaine reste recommandée (voir la colonne « Conditions / restrictions »).
 - Le statut de la cartographie du 14/10/2026 est conservé tel quel, comme observation historique ; les écarts constatés le 21/10/2026 figurent dans la colonne « Résultat du test ».
-- La disponibilité d'URLs directes et de dates de publication est précisée source par source dans la colonne « Résultat du test ». Quand une source ne fournit pas de date, JobRadar affiche « Date inconnue » et n'en déduit jamais une.
+- La disponibilité d'URLs directes et de dates de publication est précisée source par source dans la colonne « Résultat du test ». Quand une source ne fournit pas de date, jobArt affiche « Date inconnue » et n'en déduit jamais une.
 - Dernières vérifications consignées : 2026-10-21.
 
 ## Synthèse

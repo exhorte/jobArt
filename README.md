@@ -1,6 +1,8 @@
-# JobRadar
+# jobArt
 
-Veille personnelle des offres d'emploi, **Sénégal d'abord** (extensible à l'Afrique de l'Ouest et au télétravail) : JobRadar collecte des offres
+> Anciennement JobRadar (renommé le 22/10/2026). Les installations antérieures gardent leur base `jobradar` et leur volume : voir `PGDATA_VOLUME` dans `.env.example`.
+
+Veille personnelle des offres d'emploi, **Sénégal d'abord** (extensible à l'Afrique de l'Ouest et au télétravail) : jobArt collecte des offres
 réelles sur des sources publiques, les normalise, supprime les doublons, calcule un **score de pertinence explicable** par rapport à vos profils de
 recherche et les présente dans une interface web. Une veille automatique (6 h par défaut, configurable) relance la collecte.
 
@@ -63,7 +65,7 @@ docker compose up -d db                                   # PostgreSQL sur 127.0
 cd backend
 uv venv && uv pip install -e ".[dev]"                     # ou : python -m venv .venv && pip install -e ".[dev]"
 .venv/Scripts/python -m alembic upgrade head              # (Linux/macOS : .venv/bin/python)
-.venv/Scripts/python -m uvicorn jobradar.main:app --port 8000
+.venv/Scripts/python -m uvicorn jobart.main:app --port 8000
 
 # Frontend (autre terminal)
 cd frontend
@@ -71,7 +73,7 @@ npm install
 npm run dev                                               # http://localhost:3000, proxy /api -> http://127.0.0.1:8000
 ```
 
-Si la veille est portée par un worker (`SCHEDULER_MODE=off`) : `python -m jobradar.jobs.worker` dans un autre terminal.
+Si la veille est portée par un worker (`SCHEDULER_MODE=off`) : `python -m jobart.jobs.worker` dans un autre terminal.
 
 > **Windows** : utiliser `127.0.0.1` et non `localhost` dans `DATABASE_URL` (la résolution de `localhost` ajoute ~30 s à chaque connexion).
 
@@ -81,12 +83,12 @@ Variables d'environnement (fichier `.env` à la racine, voir `.env.example`) :
 
 | Variable | Défaut | Rôle |
 |---|---|---|
-| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` / `POSTGRES_PORT` | `jobradar` / — / `jobradar` / `54330` | Base PostgreSQL du compose (port publié sur 127.0.0.1) |
-| `DATABASE_URL` | `postgresql+psycopg://…@127.0.0.1:54330/jobradar` | Connexion du backend **hors conteneur** (dans le compose, elle est composée automatiquement vers `db`) |
+| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` / `POSTGRES_PORT` | `jobart` / — / `jobart` / `54330` | Base PostgreSQL du compose (port publié sur 127.0.0.1) |
+| `DATABASE_URL` | `postgresql+psycopg://…@127.0.0.1:54330/jobart` | Connexion du backend **hors conteneur** (dans le compose, elle est composée automatiquement vers `db`) |
 | `SCHEDULER_MODE` | `embedded` | `embedded` : l'API porte la veille ; `off` : un worker dédié la porte |
 | `LOG_LEVEL` | `INFO` | Niveau de journalisation |
 | `CORS_ORIGINS` | `http://localhost:3000` | Origines autorisées (inutile avec le proxy du frontend) |
-| `HTTP_USER_AGENT` | `JobRadar/0.1 (personal job watcher; respects robots.txt)` | Identité envoyée aux sites (vous pouvez y ajouter une adresse de contact) |
+| `HTTP_USER_AGENT` | `jobArt/0.1 (personal job watcher; respects robots.txt)` | Identité envoyée aux sites (vous pouvez y ajouter une adresse de contact) |
 | `COLLECT_MAX_CONCURRENCY` | `3` | Sources collectées en parallèle |
 | `REQUEST_TIMEOUT_SECONDS` / `SOURCE_TIMEOUT_SECONDS` | `20` / `240` | Délai par requête / par source |
 | `MIN_REQUEST_DELAY_SECONDS` | `1.5` | Délai minimal entre deux requêtes vers un même site |
@@ -124,8 +126,8 @@ cd backend
 .venv/Scripts/python -m ruff check .
 
 # Même suite sur PostgreSQL (base DÉDIÉE aux tests : son schéma est recréé à chaque test)
-docker exec <conteneur-db> psql -U jobradar -d postgres -c "CREATE DATABASE jobradar_test"
-TEST_DATABASE_URL=postgresql+psycopg://jobradar:<mot-de-passe>@127.0.0.1:54330/jobradar_test .venv/Scripts/python -m pytest -q
+docker exec <conteneur-db> psql -U jobart -d postgres -c "CREATE DATABASE jobart_test"
+TEST_DATABASE_URL=postgresql+psycopg://jobart:<mot-de-passe>@127.0.0.1:54330/jobart_test .venv/Scripts/python -m pytest -q
 
 cd ../frontend
 npm run typecheck && npm run lint && npm test && npm run build

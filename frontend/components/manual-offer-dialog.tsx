@@ -62,7 +62,7 @@ export function ManualOfferDialog({ meta }: { meta: Meta | undefined }) {
           <DialogDescription>Pour une offre vue ailleurs (LinkedIn, réseau, site non collecté). Elle est dédoublonnée et notée comme les autres.</DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} className="flex flex-col gap-4" noValidate>
-          <Field id="m-url" label="Lien de l'annonce *" hint="L'adresse complète de la page d'origine (https://…). Elle n'est pas visitée par JobRadar.">
+          <Field id="m-url" label="Lien de l'annonce *" hint="L'adresse complète de la page d'origine (https://…). Elle n'est pas visitée par jobArt.">
             <Input id="m-url" type="url" inputMode="url" value={form.url} onChange={set("url")} required placeholder="https://www.linkedin.com/jobs/view/…" autoFocus />
           </Field>
           <Field id="m-title" label="Intitulé du poste *">

@@ -1,4 +1,4 @@
-"""Application FastAPI JobRadar (mono-utilisateur, usage local).
+"""Application FastAPI jobArt (mono-utilisateur, usage local).
 
 Sécurité : pas d'authentification (outil personnel local) → l'API écoute sur 127.0.0.1 par défaut ; ne pas l'exposer
 sur Internet sans reverse-proxy authentifié (voir README). CORS restreint à l'origine du frontend configurée.
@@ -44,7 +44,7 @@ def create_app(settings: Settings | None = None, *, database: Database | None = 
         if settings.scheduler_mode == "embedded":
             await sched.start()
         else:
-            log.info("SCHEDULER_MODE=off : la veille doit être portée par `python -m jobradar.jobs.worker`")
+            log.info("SCHEDULER_MODE=off : la veille doit être portée par `python -m jobart.jobs.worker`")
         try:
             yield
         finally:
@@ -55,7 +55,7 @@ def create_app(settings: Settings | None = None, *, database: Database | None = 
                 db.dispose()
 
     app = FastAPI(
-        title="JobRadar API",
+        title="jobArt API",
         version=__version__,
         description="Agrégateur personnel d'offres d'emploi : collecte, normalisation, déduplication, score, veille.",
         lifespan=lifespan,

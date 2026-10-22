@@ -7,7 +7,7 @@ import { HeaderActions, HeaderStatus } from "@/components/layout/header-status";
 import { ToastProvider } from "@/components/toast";
 
 export const metadata: Metadata = {
-  title: { default: "JobRadar", template: "%s · JobRadar" },
+  title: { default: "jobArt", template: "%s · jobArt" },
   description: "Veille personnelle des offres d'emploi : collecte, dédoublonnage et score de pertinence.",
   robots: { index: false, follow: false }, // outil personnel local
 };

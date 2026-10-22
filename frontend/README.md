@@ -1,4 +1,4 @@
-# JobRadar — interface
+# jobArt — interface
 
 Next.js 16 (App Router) · TypeScript · Tailwind v4 · composants shadcn/ui · Inter · Lucide. Documentation générale : [../README.md](../README.md),
 architecture : [../docs/architecture.md](../docs/architecture.md).

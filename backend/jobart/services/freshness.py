@@ -2,7 +2,7 @@
 
 On distingue strictement :
 * la date de publication DÉCLARÉE par la source (`published_at`, peut être NULL) ;
-* la première détection par JobRadar (`first_seen_at`) — jamais présentée comme une date de publication ;
+* la première détection par jobArt (`first_seen_at`) — jamais présentée comme une date de publication ;
 * la dernière observation (`last_seen_at`) et la dernière vérification (`last_verified_at`) ;
 * la date limite de candidature (`application_deadline`, peut être NULL) ;
 * le statut de cycle de vie (`OfferStatus`).

@@ -67,7 +67,7 @@ const FULL_COLUMNS: Column<OfferListItem>[] = [
     cell: (o) => (
       <div className="text-xs leading-5">
         <p title="Date de publication déclarée par la source">{o.published_at ? formatDate(o.published_at) : "Date inconnue"}</p>
-        <p className="text-muted-foreground" title="Première détection par JobRadar">
+        <p className="text-muted-foreground" title="Première détection par jobArt">
           vue le {formatDate(o.first_seen_at)}
         </p>
       </div>

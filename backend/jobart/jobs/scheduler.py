@@ -201,7 +201,7 @@ class SchedulerService:
             self._safe_tick,
             "interval",
             seconds=self.settings.scheduler_tick_seconds,
-            id="jobradar-tick",
+            id="jobart-tick",
             max_instances=1,
             coalesce=True,
             next_run_time=utcnow() + timedelta(seconds=2),

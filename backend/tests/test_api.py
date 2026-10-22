@@ -13,11 +13,11 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 
-from jobradar.core.config import Settings
-from jobradar.core.db import Database
-from jobradar.main import create_app
-from jobradar.models import JobSource
-from jobradar.services.runner import RunService
+from jobart.core.config import Settings
+from jobart.core.db import Database
+from jobart.main import create_app
+from jobart.models import JobSource
+from jobart.services.runner import RunService
 
 from .conftest import fake_factory
 from .conftest import json_jobs as jobs

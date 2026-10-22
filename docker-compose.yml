@@ -1,5 +1,5 @@
-name: jobradar
-# JobRadar - démarrage local.
+name: jobart
+# jobArt - démarrage local.
 #   docker compose up -d db                  -> PostgreSQL seul (développement avec venv + npm local)
 #   docker compose up -d --build             -> pile complète : db + backend (API) + frontend
 #   SCHEDULER_MODE=off docker compose --profile worker up -d --build
@@ -11,15 +11,15 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-jobradar}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jobradar}
-      POSTGRES_DB: ${POSTGRES_DB:-jobradar}
+      POSTGRES_USER: ${POSTGRES_USER:-jobart}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-jobart}
+      POSTGRES_DB: ${POSTGRES_DB:-jobart}
     ports:
       - "127.0.0.1:${POSTGRES_PORT:-54330}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-jobradar} -d ${POSTGRES_DB:-jobradar}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-jobart} -d ${POSTGRES_DB:-jobart}"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -34,11 +34,11 @@ services:
         condition: service_healthy
     environment: &backend-env
       # Dans le réseau compose la base s'appelle « db » (et non 127.0.0.1:54330 comme depuis l'hôte).
-      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-jobradar}:${POSTGRES_PASSWORD:-jobradar}@db:5432/${POSTGRES_DB:-jobradar}
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-jobart}:${POSTGRES_PASSWORD:-jobart}@db:5432/${POSTGRES_DB:-jobart}
       SCHEDULER_MODE: ${SCHEDULER_MODE:-embedded}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
-      HTTP_USER_AGENT: ${HTTP_USER_AGENT:-JobRadar/0.1 (personal job watcher; respects robots.txt)}
+      HTTP_USER_AGENT: ${HTTP_USER_AGENT:-jobArt/0.1 (personal job watcher; respects robots.txt)}
       COLLECT_MAX_CONCURRENCY: ${COLLECT_MAX_CONCURRENCY:-3}
       REQUEST_TIMEOUT_SECONDS: ${REQUEST_TIMEOUT_SECONDS:-20}
       SOURCE_TIMEOUT_SECONDS: ${SOURCE_TIMEOUT_SECONDS:-240}
@@ -71,9 +71,12 @@ services:
     environment:
       <<: *backend-env
       RUN_MIGRATIONS: "0" # seule l'API applique les migrations
-    command: ["python", "-m", "jobradar.jobs.worker"]
+    command: ["python", "-m", "jobart.jobs.worker"]
     healthcheck:
       disable: true
 
 volumes:
   pgdata:
+    # Nom explicite : il ne dépend pas du nom du projet compose. Une installation existante (volume « jobradar_pgdata »,
+    # avant le renommage en jobArt) garde ses données en le déclarant dans .env : PGDATA_VOLUME=jobradar_pgdata
+    name: ${PGDATA_VOLUME:-jobart_pgdata}

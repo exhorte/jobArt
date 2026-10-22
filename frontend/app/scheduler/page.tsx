@@ -45,10 +45,10 @@ function stateExplanation(s: SchedulerSettings): string {
   }
   if (s.state === "stopped") {
     return s.mode === "off"
-      ? "La veille est activée, mais aucun processus ne la porte : l'API est en mode « off » et aucun worker ne tourne. Aucune collecte automatique n'aura lieu tant que vous n'aurez pas lancé « python -m jobradar.jobs.worker »."
+      ? "La veille est activée, mais aucun processus ne la porte : l'API est en mode « off » et aucun worker ne tourne. Aucune collecte automatique n'aura lieu tant que vous n'aurez pas lancé « python -m jobart.jobs.worker »."
       : "La veille est activée, mais aucun battement récent : le processus qui la porte est arrêté. Aucune collecte automatique n'aura lieu tant qu'il ne redémarre pas ; au redémarrage, une seule collecte de rattrapage est lancée.";
   }
-  return "La veille est désactivée : JobRadar ne collecte que lorsque vous le demandez.";
+  return "La veille est désactivée : jobArt ne collecte que lorsque vous le demandez.";
 }
 
 function SchedulerView({ s, profiles, sources, reload }: { s: SchedulerSettings; profiles: Profile[]; sources: Source[]; reload: () => Promise<void> }) {

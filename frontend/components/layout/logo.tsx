@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Pastille de logo : anneau fin + disque plein + monogramme « JR » (marque provisoire de l'application).
+ * Pastille de logo : anneau fin + disque plein + monogramme « jA » (marque provisoire de l'application).
  */
-export function LogoMark({ className, initials = "JR" }: { className?: string; initials?: string }) {
+export function LogoMark({ className, initials = "jA" }: { className?: string; initials?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={cn("size-8 shrink-0", className)} aria-hidden="true" focusable="false">
       <circle cx="16" cy="16" r="15.25" className="fill-background stroke-border" strokeWidth="1.5" />
@@ -26,7 +26,7 @@ export function LogoMark({ className, initials = "JR" }: { className?: string; i
 
 export function Logo({
   className,
-  name = "JobRadar",
+  name = "jobArt",
   tagline = "Veille emploi",
 }: {
   className?: string;

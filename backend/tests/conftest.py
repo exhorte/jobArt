@@ -20,12 +20,12 @@ import httpx
 import pytest
 from sqlalchemy import select
 
-from jobradar.collectors.base import Connector, HealthResult, NormalizedJob, RawJob, SearchParameters
-from jobradar.collectors.http import HttpPool, PoliteClient
-from jobradar.core.config import REPO_ROOT, Settings
-from jobradar.core.db import Database
-from jobradar.models import Base, JobSource, SearchProfile
-from jobradar.services.bootstrap import bootstrap, ensure_scheduler_state
+from jobart.collectors.base import Connector, HealthResult, NormalizedJob, RawJob, SearchParameters
+from jobart.collectors.http import HttpPool, PoliteClient
+from jobart.core.config import REPO_ROOT, Settings
+from jobart.core.db import Database
+from jobart.models import Base, JobSource, SearchProfile
+from jobart.services.bootstrap import bootstrap, ensure_scheduler_state
 
 FIXTURES = pathlib.Path(__file__).parent / "fixtures"
 NOW = datetime(2026, 10, 21, 12, 0, tzinfo=UTC)
@@ -41,7 +41,7 @@ def fixture_json(name: str) -> Any:
 
 @pytest.fixture()
 def settings(tmp_path: pathlib.Path) -> Settings:
-    url = os.environ.get("TEST_DATABASE_URL") or f"sqlite:///{tmp_path / 'jobradar_test.sqlite'}"
+    url = os.environ.get("TEST_DATABASE_URL") or f"sqlite:///{tmp_path / 'jobart_test.sqlite'}"
     return Settings(
         database_url=url,
         scheduler_mode="off",
@@ -120,7 +120,7 @@ def make_job(**kw: Any) -> NormalizedJob:
 # ---------------------------------------------------------------- HTTP simulé
 def make_pool(handler: Callable[[httpx.Request], httpx.Response], **kw: Any) -> HttpPool:
     return HttpPool(
-        user_agent="JobRadar-test/0.1", timeout=5, default_min_delay=0.0,
+        user_agent="jobArt-test/0.1", timeout=5, default_min_delay=0.0,
         transport=httpx.MockTransport(handler), **kw,
     )
 
@@ -166,7 +166,7 @@ class FakeConnector(Connector):
     async def search(self, params: SearchParameters) -> list[RawJob]:
         import asyncio
 
-        from jobradar.core import errors
+        from jobart.core import errors
 
         FakeConnector.calls.append(self.config.get("key", "?"))
         if self.config.get("sleep"):
@@ -180,7 +180,7 @@ class FakeConnector(Connector):
         return [RawJob(data=j) for j in self.config.get("jobs", [])]
 
     def normalize(self, raw: RawJob) -> NormalizedJob:
-        from jobradar.core.errors import NormalizationError
+        from jobart.core.errors import NormalizationError
 
         d = dict(raw.data)
         if d.pop("_invalid", False):

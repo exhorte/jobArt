@@ -43,7 +43,7 @@ dédoublonne, les note par rapport à des profils de recherche, puis le frontend
 
 ## Backend
 
-### Modules (`backend/jobradar/`)
+### Modules (`backend/jobart/`)
 
 | Module | Rôle |
 |---|---|
@@ -82,7 +82,7 @@ class Connector(ABC):
 - `SearchParameters` est l'union des profils applicables (mots-clés entrelacés pour que chaque profil soit représenté même si la
   source plafonne le nombre de requêtes).
 - `NormalizedJob` est le schéma commun : les champs inconnus restent vides (jamais inventés) ; `estimated_fields` liste ce qui est **déduit**
-  par JobRadar et non déclaré par la source.
+  par jobArt et non déclaré par la source.
 - Les connecteurs sont **enregistrés explicitement** dans `collectors/registry.py`. Aucun endpoint n'accepte une URL fournie par le client
   (sauf l'ajout manuel, qui n'émet aucune requête vers l'URL).
 - Ajouter une source : créer le module, l'enregistrer, ajouter l'entrée dans `config/sources.yaml`, écrire des tests sur fixtures réelles,
@@ -148,7 +148,7 @@ C'est une proximité avec les critères du profil, pas une probabilité d'embauc
 - Un *tick* APScheduler (30 s) renouvelle le bail et le battement de cœur, nettoie les exécutions orphelines et lance une collecte quand
   `next_run_at` est dépassé. Après un arrêt : **une seule** collecte de rattrapage (pas de rafale). Si une collecte est en cours : report au tick suivant.
 - **État réel** : `running` seulement si battement récent ET bail valide ; sinon « activée mais arrêtée ». Le frontend ne prétend jamais qu'elle tourne.
-- Deux modes : `SCHEDULER_MODE=embedded` (l'API porte la veille) ou `off` + `python -m jobradar.jobs.worker` (la veille survit à un redémarrage de l'API).
+- Deux modes : `SCHEDULER_MODE=embedded` (l'API porte la veille) ou `off` + `python -m jobart.jobs.worker` (la veille survit à un redémarrage de l'API).
 
 ## Frontend (`frontend/`)
 

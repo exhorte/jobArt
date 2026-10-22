@@ -2,8 +2,8 @@
 
 import pytest
 
-from jobradar.core.errors import NormalizationError
-from jobradar.services.urls import clean_url, host_allowed, url_key, validate_job_url
+from jobart.core.errors import NormalizationError
+from jobart.services.urls import clean_url, host_allowed, url_key, validate_job_url
 
 
 def test_clean_url_removes_tracking_and_fragment_but_keeps_identifiers():

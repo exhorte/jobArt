@@ -8,7 +8,7 @@ from pathlib import Path
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# backend/jobradar/core/config.py -> racine du dépôt = parents[3]
+# backend/jobart/core/config.py -> racine du dépôt = parents[3]
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
@@ -19,7 +19,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    database_url: str = "postgresql+psycopg://jobradar:jobradar@127.0.0.1:54330/jobradar"
+    database_url: str = "postgresql+psycopg://jobart:jobart@127.0.0.1:54330/jobart"
     log_level: str = "INFO"
     cors_origins: str = "http://localhost:3000"
 
@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     scheduler_lease_ttl_seconds: int = 90
 
     # Collecte
-    http_user_agent: str = "JobRadar/0.1 (personal job watcher; respects robots.txt)"
+    http_user_agent: str = "jobArt/0.1 (personal job watcher; respects robots.txt)"
     collect_max_concurrency: int = Field(default=3, ge=1, le=10)
     request_timeout_seconds: float = Field(default=20.0, gt=0)
     source_timeout_seconds: float = Field(default=240.0, gt=0)
