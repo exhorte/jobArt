@@ -36,7 +36,7 @@ dédoublonne, les note par rapport à des profils de recherche, puis le frontend
 | Accès BD | SQLAlchemy 2 **synchrone** + psycopg 3, Alembic | Simplicité. Les écritures depuis le code asynchrone passent par `asyncio.to_thread`. |
 | Collecte | `httpx` asynchrone, une tâche par source, concurrence bornée | Les sources sont indépendantes : une erreur n'arrête jamais les autres. |
 | Collecte longue | Asynchrone : `POST /api/search-runs` rend un identifiant, le frontend interroge `GET /api/search-runs/{id}` | Aucune requête HTTP ne reste ouverte pendant la collecte. |
-| Authentification | Aucune (outil personnel) | L'API écoute sur 127.0.0.1 ; ne jamais l'exposer sans reverse-proxy authentifié. |
+| Authentification | Aucune dans l'API (outil personnel) ; verrou HTTP Basic optionnel devant le frontend (`frontend/proxy.ts`) | L'API écoute sur 127.0.0.1 ; ne jamais l'exposer sans reverse-proxy authentifié. Un frontend public (Vercel) exige `BASIC_AUTH_USER` / `BASIC_AUTH_PASSWORD` et se verrouille sinon. |
 | Frontend → API | Proxy Next (`app/api/[...path]`) avec `BACKEND_URL` lu **à l'exécution** | Une même image Docker sert tous les environnements ; pas de CORS ; le navigateur ne connaît que le frontend. |
 | Rendu | Pages client avec `fetch` + rafraîchissement adaptatif | Les données sont locales et changent pendant les collectes ; pas de rendu serveur à synchroniser. |
 | LLM | Aucun dans le MVP | Score et déduplication sont déterministes et explicables. |
