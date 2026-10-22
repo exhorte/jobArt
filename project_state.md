@@ -5,7 +5,8 @@
 ## Hébergement public (22/10/2026)
 - **Frontend** : projet Vercel `jobart` (équipe `exhorte's projects`, racine `frontend`, région `fra1`), déployé à chaque push sur `main` de `exhorte/jobArt`. Verrou HTTP Basic obligatoire (`frontend/proxy.ts`) : vérifié en ligne (401 sans identifiants, 200 avec).
 - **Backend** : service Render `jobart-api` (Docker, plan free, Frankfurt) + base `jobart-db` (PostgreSQL 17, plan free, **supprimée le 21/11/2026** sauf passage à un plan payant). L'API exige `API_TOKEN` (`Authorization: Bearer`, ajouté par le proxy Next via `BACKEND_API_TOKEN`).
-- **Reste à faire** : ajouter `DATABASE_URL` (URL interne de `jobart-db`) aux variables de `jobart-api` dans le tableau de bord Render ; sans elle le backend s'arrête au démarrage. Puis lancer une première collecte (la base Render part vide).
+- **En service depuis le 22/10/2026** : `DATABASE_URL` renseignée, `/api/health` ok, protection par jeton vérifiée (401 sans jeton, 404 sur `/openapi.json`), chaîne Vercel → Render vérifiée. Première collecte (n° 1, lancée depuis le site public) : statut `partial`, **225 offres créées** sur 230 trouvées (5 doublons), 8 sources sur 10 réussies.
+- **Deux sources bloquées depuis Render** : `emploisenegal` et `expat_dakar` répondent HTTP 403 (défi anti-robot) à l'adresse du datacenter Render ; elles réussissent en local (27 et 2 offres). Conformément à la règle du projet, ce blocage n'est pas contourné. Pour ces deux sources, collecter depuis la machine locale ou accepter une couverture partielle sur le site public.
 - Le plan free de Render endort le service après inactivité : la veille automatique ne tourne pas pendant le sommeil (plan Starter nécessaire pour une veille continue).
 - Identifiants (verrou, jeton) : fichier local `.env.deploy` (non versionné) et variables des hébergeurs.
 
@@ -45,5 +46,5 @@ Différées : SeneJobs (404), RecrutSen (SPA), Socium Job (530), TechCabal (widg
 Career List Africa, Impactpool. Détail : [docs/source-feasibility.md](docs/source-feasibility.md).
 
 ## Prochaine tâche prioritaire
-Mettre `DATABASE_URL` sur le service Render `jobart-api`, vérifier `/api/health` puis lancer une collecte depuis le site public ; trancher les questions ouvertes (plan payant Render pour la veille, CGU Emploi Dakar, fixtures de pages tierces, profils par défaut) ; ensuite laisser tourner la veille quelques jours.
+Décider du sort des deux sources bloquées depuis Render, activer la veille sur le site public si souhaité ; trancher les questions ouvertes (plan payant Render pour la veille, CGU Emploi Dakar, fixtures de pages tierces, profils par défaut) ; ensuite laisser tourner la veille quelques jours.
 Liste complète : [docs/development-plan.md](docs/development-plan.md).
